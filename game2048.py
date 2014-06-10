@@ -14,8 +14,8 @@ def init():
     global ecount
     data = [[None for i in range(4)] for j in range(4)]
 
-    generate()
-    generate()
+    generate(0)
+    generate(0)
 
 # 生成一个2或4，并放到空余位置
 # mode 0 只生成2 用于游戏初始化
@@ -162,7 +162,7 @@ def circle():
     while ( running ) :
         key = msvcrt.getch()
         if( key == '\x1b' ):
-            print('88')
+            print(' 88')
             break
         elif ( key == 'w' ) : # 上
             onMove(0)
