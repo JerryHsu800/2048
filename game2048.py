@@ -1,5 +1,6 @@
 #coding=gbk
 import random
+import os
 
 data = []
 
@@ -61,29 +62,32 @@ def onMove(direct):
     global ecount
     global score
     global running
+
+    status = 0 # 1 发生合并 2 发生移动
     #纵向
     if( direct == 0 or direct == 1 ) :
         # 合并
+        start = 0 if direct == 0 else 3
+        end = 4 if direct == 0 else -1
+        step = 1 if direct == 0 else -1
+
         for i in range(4):
-            idx = 0
+            idx = start
             d = 0
-            for j in range(4):
+            for j in range(start, end, step):
                 d0 = data[j][i]
                 if d and d == d0 :
                     data[j][i] = None
                     data[idx][i] = d+d
                     score += d+d
                     d = 0
-                    idx = 0
+                    idx = start
                     ecount += 1
+                    status |= 1
                 elif d0:
                     idx = j
                     d = d0
         # 移动
-        start = 0 if direct == 0 else 3
-        end = 4 if direct == 0 else -1
-        step = 1 if direct == 0 else -1
-
         for i in range(4):
             idx = start
             for j in range(start, end, step):
@@ -92,29 +96,33 @@ def onMove(direct):
                     if j != idx:
                         data[idx][i] = d
                         data[j][i] = None
+                        status |= 2
                     idx += step
     # 横向
     if( direct == 2 or direct == 3 ) :
         #合并
+
+        start = 0 if direct == 2 else 3
+        end = 4 if direct == 2 else -1
+        step = 1 if direct == 2 else -1
+
         for i in range(4):
-            idx = 0
+            idx = start
             d = 0
-            for j in range(4):
+            for j in range(start, end, step):
                 d0 = data[i][j]
                 if d and d == d0 :
                     data[i][j] = None
                     data[i][idx] = d+d
                     score += d+d
                     d = 0
-                    idx = 0
+                    idx = start
                     ecount += 1
+                    status |= 1
                 elif d0:
                     idx = j
                     d = d0
         #移动
-        start = 0 if direct == 2 else 3
-        end = 4 if direct == 2 else -1
-        step = 1 if direct == 2 else -1
 
         for i in range(4):
             idx = start
@@ -124,8 +132,12 @@ def onMove(direct):
                     if j != idx:
                         data[i][idx] = d
                         data[i][j] = None
+                        status |= 2
                     idx += step
+    if not status:
+        return
     generate()
+    os.system('cls')
     draw()
 
     if ecount == 0 and checkOver():
