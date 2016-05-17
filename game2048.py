@@ -1,15 +1,15 @@
-#coding=gbk
+ï»¿#coding=utf-8
 import random
 import os
 
 data = []
 
-ecount = 16 # ¿ÕÓàÎ»ÖÃÊıÁ¿
+ecount = 16 # ç©ºä½™ä½ç½®æ•°é‡
 score = 0
 
 running = False
 
-# ³õÊ¼»¯Êı¾İ£¬²¢ËæÒâ·ÅÖÃÁ½¸ö2
+# åˆå§‹åŒ–æ•°æ®ï¼Œå¹¶éšæ„æ”¾ç½®ä¸¤ä¸ª2
 def init():
     global data
     global ecount
@@ -18,12 +18,12 @@ def init():
     generate(0)
     generate(0)
 
-# Éú³ÉÒ»¸ö2»ò4£¬²¢·Åµ½¿ÕÓàÎ»ÖÃ
-# mode 0 Ö»Éú³É2 ÓÃÓÚÓÎÏ·³õÊ¼»¯
-# mode 1 Éú³É2»ò4 ÓÃÓÚÓÎÏ·ÔËĞĞÊ±
+# ç”Ÿæˆä¸€ä¸ª2æˆ–4ï¼Œå¹¶æ”¾åˆ°ç©ºä½™ä½ç½®
+# mode 0 åªç”Ÿæˆ2 ç”¨äºæ¸¸æˆåˆå§‹åŒ–
+# mode 1 ç”Ÿæˆ2æˆ–4 ç”¨äºæ¸¸æˆè¿è¡Œæ—¶
 def generate(mode = 1):
     global ecount
-    if( ecount <= 0 ):
+    if  ecount <= 0 :
         return
     d = 2 if mode == 0 else random.randint(1,2)*2
 
@@ -42,31 +42,32 @@ def generate(mode = 1):
 
 def draw():
     print(' score : %i'%score)
-    print('©°©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©´')
+    print('+------+------+------+------+')
     for i,row in enumerate(data):
-        line = '©¦'
+        line = '|'
         for d in row:
             if not d:
-                line = line + '        ©¦'
+                line = line + '      |'
             else :
-                line = line + '%6i  ©¦'%d
-        print('©¦        ©¦        ©¦        ©¦        ©¦')
+                line = line + '%5i |'%d
+        print('|      |      |      |      |')
         print(line)
-        print('©¦        ©¦        ©¦        ©¦        ©¦')
+        print('|      |      |      |      |')
         if i < 3 :
-            print('©À©¤©¤©¤©¤©à©¤©¤©¤©¤©à©¤©¤©¤©¤©à©¤©¤©¤©¤©È')
-    print('©¸©¤©¤©¤©¤©Ø©¤©¤©¤©¤©Ø©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¼')
+            print('+------+------+------+------+')
+    print('+------+------+------+------+')
 
-#direct ÒÆ¶¯·½Ïò  0ÉÏ 1ÏÂ 2×ó 3ÓÒ
+
+#direct ç§»åŠ¨æ–¹å‘  0ä¸Š 1ä¸‹ 2å·¦ 3å³
 def onMove(direct):
     global ecount
     global score
     global running
 
-    status = 0 # 1 ·¢ÉúºÏ²¢ 2 ·¢ÉúÒÆ¶¯
-    #×İÏò
-    if( direct == 0 or direct == 1 ) :
-        # ºÏ²¢
+    status = 0 # 1 å‘ç”Ÿåˆå¹¶ 2 å‘ç”Ÿç§»åŠ¨
+    #çºµå‘
+    if  direct == 0 or direct == 1  :
+        # åˆå¹¶
         start = 0 if direct == 0 else 3
         end = 4 if direct == 0 else -1
         step = 1 if direct == 0 else -1
@@ -87,7 +88,7 @@ def onMove(direct):
                 elif d0:
                     idx = j
                     d = d0
-        # ÒÆ¶¯
+        # ç§»åŠ¨
         for i in range(4):
             idx = start
             for j in range(start, end, step):
@@ -98,10 +99,9 @@ def onMove(direct):
                         data[j][i] = None
                         status |= 2
                     idx += step
-    # ºáÏò
-    if( direct == 2 or direct == 3 ) :
-        #ºÏ²¢
-
+    # æ¨ªå‘
+    if  direct == 2 or direct == 3  :
+        #åˆå¹¶
         start = 0 if direct == 2 else 3
         end = 4 if direct == 2 else -1
         step = 1 if direct == 2 else -1
@@ -122,8 +122,7 @@ def onMove(direct):
                 elif d0:
                     idx = j
                     d = d0
-        #ÒÆ¶¯
-
+        #ç§»åŠ¨
         for i in range(4):
             idx = start
             for j in range(start, end, step):
@@ -136,6 +135,12 @@ def onMove(direct):
                     idx += step
     if not status:
         return
+    os.system('cls')
+    draw()
+
+    import time
+    time.sleep(0.1)
+
     generate()
     os.system('cls')
     draw()
@@ -165,24 +170,23 @@ def checkOver():
                 d = d0
     return True
 
+
 def circle():
     import msvcrt
-
     global running
     running = True
-
     while ( running ) :
         key = msvcrt.getch()
-        if( key == '\x1b' ):
+        if  key == b'\x1b' :
             print(' 88')
             break
-        elif ( key == 'w' ) : # ÉÏ
+        elif ( key == b'w' ) : # ä¸Š
             onMove(0)
-        elif ( key == 's' ) : # ÏÂ
+        elif ( key == b's' ) : # ä¸‹
             onMove(1)
-        elif ( key == 'a' ) : # ×ó
+        elif ( key == b'a' ) : # å·¦
             onMove(2)
-        elif ( key == 'd' ) : # ÓÒ
+        elif ( key == b'd' ) : # å³
             onMove(3)
 
 
@@ -190,6 +194,3 @@ if __name__ == '__main__':
     init()
     draw()
     circle()
-
-
-
